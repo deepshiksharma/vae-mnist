@@ -1,16 +1,15 @@
 import torch
 from torch import optim
-from ..models.vae import VAE, the_loss_function
 
-def train(hyperparams, dataloaders):
+def train(model, the_loss_function, hyperparams, dataloaders):
     lr = hyperparams['learning_rate']
     num_epochs = hyperparams['num_epochs']
     device = hyperparams['device']
     
     train_loader = dataloaders['train']
     val_loader = dataloaders['val']
-
-    model = VAE.to(device)
+    
+    model = model.to(device)
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
     train_losses, val_losses = list(), list()
