@@ -2,26 +2,28 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+# The loss function
+def the_loss_function(recon_x, x, mu, logvar):
+    BCE = F.binary_cross_entropy(recon_x, x, reduction='sum')
+    KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
+    return BCE + KLD
+
 
 class Encoder(nn.Module):
     def __init__(self, latent_dim=20):
         super().__init__()
-        
         # (B, 1, 28, 28) → (B, 32, 14, 14)
         self.conv1 = nn.Conv2d(
             in_channels=1, out_channels=32,
             kernel_size=4, stride=2, padding=1)
-        
         # (B, 32, 14, 14) → (B, 64, 7, 7)
         self.conv2 = nn.Conv2d(
             in_channels=32, out_channels=64,
             kernel_size=4, stride=2, padding=1)
-        
         # (B, 64, 7, 7) → (B, 128, 4, 4)
         self.conv3 = nn.Conv2d(
             in_channels=64, out_channels=128,
             kernel_size=3, stride=2, padding=1)
-        
         self.fc_mu = nn.Linear(128*4*4, latent_dim)
         self.fc_logvar = nn.Linear(128*4*4, latent_dim)
 
@@ -33,24 +35,19 @@ class Encoder(nn.Module):
         mu = self.fc_mu(x)
         logvar = self.fc_logvar(x)
         return mu, logvar
-        
 
 class Decoder(nn.Module):
     def __init__(self, latent_dim=20):
         super().__init__()
-        
         self.fc = nn.Linear(latent_dim, 128*4*4)
-        
         # (B, 128, 4, 4) → (B, 64, 7, 7)
         self.deconv1 = nn.ConvTranspose2d(
             in_channels=128, out_channels=64,
             kernel_size=3, stride=2, padding=1, output_padding=1)
-        
         # (B, 64, 7, 7) → (B, 32, 14, 14)
         self.deconv2 = nn.ConvTranspose2d(
             in_channels=64, out_channels=32,
             kernel_size=4, stride=2, padding=1)
-        
         # (B, 32, 14, 14) → (B, 1, 28, 28)
         self.deconv3 = nn.ConvTranspose2d(
             in_channels=32, out_channels=1,
@@ -63,7 +60,6 @@ class Decoder(nn.Module):
         x = F.relu(self.deconv2(x))
         x = torch.sigmoid(self.deconv3(x))
         return x
-    
 
 class VAE(nn.Module):
     def __init__(self, latent_dim=20):
@@ -75,7 +71,7 @@ class VAE(nn.Module):
         std = torch.exp(0.5*logvar)
         eps = torch.randn_like(std)
         return mu + eps*std
-
+    
     def forward(self, x):
         mu, logvar = self.encoder(x)
         z = self.reparameterize(mu, logvar)

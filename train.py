@@ -12,13 +12,6 @@ model_to_train = sys.argv[1]
 if model_to_train not in ["vae", "conditional_vae"]:
     sys.exit("Incorrect usage.")
 
-
-# The loss function
-def the_loss_function(recon_x, x, mu, logvar):
-    BCE = F.binary_cross_entropy(recon_x, x, reduction='sum')
-    KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
-    return BCE + KLD
-
 # The compute device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"device: {device}\n")
