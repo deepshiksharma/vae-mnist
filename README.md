@@ -4,10 +4,22 @@ This project implements a Variational Autoencoder (VAE), and a Conditional VAE t
 The Conditional VAE extends upon the vanilla VAE by passing in class labels during training and generation. This allows for controlled synthesis of images conditioned on the class label.
 
 ## What is the latent space?
+The latent space is essentially a multi-dimentional coordinate system where the representation of input data is held.
 
+### The latent vector
+The model encodes each handwritten digit into the latent space as a Gaussian (normal) distribution. This distribution includes the range of possible handwritten variations for a specific digit.
 
 ## How the VAE works
 ...
+
+### How is Conditional VAE different
+...
+
+### The loss function
+...
+
+
+
 
 
 ```sh
