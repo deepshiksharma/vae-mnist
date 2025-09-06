@@ -1,6 +1,4 @@
 MNIST/
 outputs/
-*.pth
-*.png
 __pycache__/
 .ipynb_checkpoints

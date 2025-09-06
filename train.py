@@ -31,7 +31,7 @@ print(f"device: {device}\n")
 # The hyperparameters
 hyperparams = {
     'learning_rate': 1e-3,
-    'num_epochs': 60,
+    'num_epochs': 3,
     'batch_size': 64,
     'device': device
 }
@@ -68,8 +68,9 @@ if model_to_train == "vae":
 model_name = f"{model_to_train} epoch_{hyperparams['num_epochs']} \
 lr_{hyperparams['learning_rate']} bsize_{hyperparams['batch_size']}"
 
-os.makedirs("./outputs", exist_ok=True)
 save_path = os.path.join("outputs", model_name)
+os.makedirs(save_path, exist_ok=True)
+
 
 # Save model weights
 torch.save(model.state_dict(), os.path.join(save_path, "weights.pth"))

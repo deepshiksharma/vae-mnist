@@ -18,9 +18,9 @@ class Encoder(nn.Module):
         self.fc_logvar = nn.Linear(64*7*7, latent_dim)
 
     def forward(self, x, labels):
-        labels_oh = F.one_hot(labels, num_classes=self.num_classes).float()
-        labels_oh = labels_oh[:, :, None, None].expand(-1, -1, x.size(2), x.size(3))
-        x = torch.cat([x, labels_oh], dim=1)
+        labels_onehot = F.one_hot(labels, num_classes=self.num_classes).float()
+        labels_onehot = labels_onehot[:, :, None, None].expand(-1, -1, x.size(2), x.size(3))
+        x = torch.cat([x, labels_onehot], dim=1)
         x = F.relu(self.conv1(x))
         x = F.relu(self.conv2(x))
         x = torch.flatten(x, start_dim=1)
@@ -47,8 +47,8 @@ class Decoder(nn.Module):
             kernel_size=3, stride=1, padding=1)
 
     def forward(self, z, labels):
-        labels_oh = F.one_hot(labels, num_classes=self.num_classes).float()
-        z = torch.cat([z, labels_oh], dim=1)
+        labels_onehot = F.one_hot(labels, num_classes=self.num_classes).float()
+        z = torch.cat([z, labels_onehot], dim=1)
         x = self.fc(z)
         x = x.view(-1, 128, 7, 7)
         x = F.relu(self.deconv1(x))
