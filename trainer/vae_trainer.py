@@ -5,7 +5,6 @@ def train(model, the_loss_function, hyperparams, dataloaders):
     lr = hyperparams['learning_rate']
     num_epochs = hyperparams['num_epochs']
     device = hyperparams['device']
-    
     train_loader = dataloaders['train']
     val_loader = dataloaders['val']
     
@@ -13,7 +12,6 @@ def train(model, the_loss_function, hyperparams, dataloaders):
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
     train_losses, val_losses = list(), list()
-
     for epoch in range(num_epochs):
         model.train()
         train_loss = 0
@@ -43,5 +41,4 @@ def train(model, the_loss_function, hyperparams, dataloaders):
         print(f"Epoch {epoch+1}, Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}")
     
     loss_values = {'train':train_losses, 'val':val_losses}
-    
     return model, loss_values

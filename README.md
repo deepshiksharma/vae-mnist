@@ -1,4 +1,4 @@
-# mnist-vae
+# Variational Autoencoder for Handwritten Digit Image Generation
 
 ```
 pyversion 3.12.9

@@ -5,7 +5,7 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split
 import matplotlib.pyplot as plt
 from models.vae import VAE
-# from models.cvae import CVAE
+from models.cvae import CVAE
 from trainer import vae_trainer, cvae_trainer
 from utils import present_hyperparams
 
@@ -41,13 +41,14 @@ present_hyperparams(hyperparams)
 # The dataset
 transform = transforms.Compose([transforms.ToTensor()])
 dataset = datasets.MNIST(root="./", train=True, download=True, transform=transform)
+num_classes = len(dataset.classes)
 
 # training and validation splits
 dataset_size = len(dataset)
 val_size = int(dataset_size * 0.1)
 train_size = dataset_size - val_size
 train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
-print("\ndataset_size:", dataset_size)
+print(f"\ndataset_size: {dataset_size}\tnum_classes: {num_classes}")
 print(f"train_size: {train_size}\tval_size: {val_size}\n")
 
 # dataloaders
@@ -60,9 +61,9 @@ dataloaders = {'train': train_loader, 'val': val_loader}
 if model_to_train == "vae":
     model = VAE()
     model, loss_values = vae_trainer.train(model, the_loss_function, hyperparams, dataloaders)
-# elif model_to_train == "conditional_vae":
-    # model = CVAE()
-    # model, loss_values = cvae_trainer.train(model, the_loss_function, hyperparams, dataloaders)
+elif model_to_train == "conditional_vae":
+    model = CVAE(num_classes=num_classes)
+    model, loss_values = cvae_trainer.train(model, the_loss_function, hyperparams, dataloaders)
 
 
 model_name = f"{model_to_train} epoch_{hyperparams['num_epochs']} \
