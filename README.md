@@ -10,9 +10,7 @@ This distribution includes the range of possible handwritten variations for a sp
 
 ### The latent vector
 A sample taken from the distribution of each digit's representation from the latent space is the latent vector $\vec{z}$.
-
 $\vec{z}$ represents a specific "variation" of a specific handwritten digit.
-
 
 The ability to sample from a distribution to generate new digit variations makes the model generative.
 
