@@ -4,20 +4,17 @@ This project implements a Variational Autoencoder (VAE), and a Conditional VAE t
 The Conditional VAE extends upon the vanilla VAE by passing in class labels during training and generation. This allows for controlled synthesis of images conditioned on the class label.
 
 ## What is the latent space?
-The latent space is essentially just a multi-dimensional coordinate system where the representation of input data is held. The model encodes each handwritten digit into the latent space as a Gaussian (normal) distribution, parameterized by a mean (μ) and a log-variance (log σ²).
+The latent space is essentially just a multi-dimensional coordinate system where the representation of input data is held. The model encodes each handwritten digit into the latent space as a Gaussian (normal) distribution, parameterized by mean ($\mu$) and log-variance ($\log \sigma^2$).
 
 This distribution includes the range of possible handwritten variations for a specific digit. 
 
 ### The latent vector
-A sample taken from the distribution of each digit's representation from the latent space is the latent vector *_z_*.
+A sample taken from the distribution of each digit's representation from the latent space is the latent vector $\vec{z}$.
 
-$z$ represents a specific "variation" of a specific handwritten digit.
+$\vec{z}$ represents a specific "variation" of a specific handwritten digit.
 
-$$z$$
 
-$\mathbf{z}$
-
-The ability to sample new *_z_* vectors from a distribution makes the model generative.
+The ability to sample from a distribution to generate new digit variations makes the model generative.
 
 ## How the VAE works
 ...
