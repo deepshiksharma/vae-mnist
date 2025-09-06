@@ -1,4 +1,4 @@
-import sys
+import sys, os
 import torch
 import torch.nn.functional as F
 from torchvision import datasets, transforms
@@ -28,8 +28,8 @@ print(f"device: {device}\n")
 # The hyperparameters
 hyperparams = {
     'learning_rate': 1e-3,
-    'num_epochs': 100,
-    'batch_size': 128,
+    'num_epochs': 60,
+    'batch_size': 64,
     'device': device
 }
 present_hyperparams(hyperparams)
@@ -56,16 +56,23 @@ dataloaders = {'train': train_loader, 'val': val_loader}
 # The training loop
 if model_to_train == "vae":
     model = VAE()
-    trained_model, loss_values = vae_trainer.train(model, the_loss_function, hyperparams, dataloaders)
-elif model_to_train == "conditional_vae":
-    model = CVAE()
-    trained_model, loss_values = cvae_trainer.train(model, the_loss_function, hyperparams, dataloaders)
+    model, loss_values = vae_trainer.train(model, the_loss_function, hyperparams, dataloaders)
+# elif model_to_train == "conditional_vae":
+    # model = CVAE()
+    # model, loss_values = cvae_trainer.train(model, the_loss_function, hyperparams, dataloaders)
+
+
+model_name = f"{model_to_train} epoch_{hyperparams['num_epochs']} \
+lr_{hyperparams['learning_rate']} bsize_{hyperparams['batch_size']}"
+
+os.makedirs("./outputs", exist_ok=True)
+save_path = os.path.join("outputs", model_name)
 
 # Save model weights
-torch.save(trained_model.state_dict(), f"{model_to_train}.pth")
+torch.save(model.state_dict(), os.path.join(save_path, "weights.pth"))
 
 # Plot loss curves
 plt.plot(loss_values['train'], label="Training loss")
 plt.plot(loss_values['val'], label="Validation loss")
 plt.legend()
-plt.savefig(f"{model_to_train} loss curves.png")
+plt.savefig(os.path.join(save_path, "loss curves.png"))
