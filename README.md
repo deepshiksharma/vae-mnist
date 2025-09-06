@@ -9,7 +9,13 @@ The latent space is essentially just a multi-dimensional coordinate system where
 This distribution includes the range of possible handwritten variations for a specific digit. 
 
 ### The latent vector
-A sample taken from the distribution of each digit's representation from the latent space is the latent vector *_z_*. *_z_* represents a specific "variation" of a specific handwritten digit.
+A sample taken from the distribution of each digit's representation from the latent space is the latent vector *_z_*.
+
+$z$ represents a specific "variation" of a specific handwritten digit.
+
+$$z$$
+
+$\mathbf{z}$
 
 The ability to sample new *_z_* vectors from a distribution makes the model generative.
 
