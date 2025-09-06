@@ -11,7 +11,10 @@ from utils import present_hyperparams
 
 # Check command line argument
 if len(sys.argv) != 2 or sys.argv[1] not in ["vae", "conditional_vae"]:
-    sys.exit("Incorrect usage.")
+    print("Invalid arguments.\nCorrect usage:")
+    print("  python train.py vae                # Train variational autoencoder")
+    print("  python train.py conditional_vae    # Train conditional variational autoencoder")
+    sys.exit(1)
 model_to_train = sys.argv[1]
 
 
@@ -44,7 +47,7 @@ dataset_size = len(dataset)
 val_size = int(dataset_size * 0.1)
 train_size = dataset_size - val_size
 train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
-print("dataset_size:", dataset_size)
+print("\ndataset_size:", dataset_size)
 print(f"train_size: {train_size}\tval_size: {val_size}\n")
 
 # dataloaders
