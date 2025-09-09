@@ -20,7 +20,7 @@ This distribution includes the range of possible handwritten variations for a sp
 
 Note: In practice, the encoder outputs mean ($\mu$) and specifically, log-variance ($\log \sigma^2$). Predicting $\log \sigma^2$ is more numerically stable and also simplifies the loss calculation. $\sigma$ is derived from $\log \sigma^2$ when needed. For simplicity, I will refer to this quantity as $\sigma$ throughout this readme.
 
-*Note: In practice, the encoder outputs mean ($\mu$) and specifically, log-variance ($\log \sigma^2$). Predicting $\log \sigma^2$ is more numerically stable and also simplifies the loss calculation. $\sigma$ is derived from $\log \sigma^2$ when needed. For simplicity, I will refer to this quantity as $\sigma$ throughout this readme.*
+<blockquote> Note: In practice, the encoder outputs mean ($\mu$) and specifically, log-variance ($\log \sigma^2$). Predicting $\log \sigma^2$ is more numerically stable and also simplifies the loss calculation. $\sigma$ is derived from $\log \sigma^2$ when needed. For simplicity, I will refer to this quantity as $\sigma$ throughout this readme. </blockquote>
 
 
 ### The latent vector
