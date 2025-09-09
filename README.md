@@ -18,7 +18,7 @@ The latent space is a multi-dimensional co-ordinate system where the representat
 The encoder component of the model encodes each handwritten digit image into the latent space as a normal distribution, parameterized by mean ($\mu$) and standard deviation ($\sigma$).<sup>  _refer note below_</sup> <br>
 This distribution includes the range of possible handwritten variations for a specific digit.
 
-_Note: In practice, the encoder outputs $\mu$ and log-variance ($\log \sigma^2$). Predicting $\log \sigma^2$ is more numerically stable and also simplifies loss calculation. $\sigma$ is derived from $\log \sigma^2$ when needed. For simplicity, I will refer to this quantity as $\sigma$ throughout this text._
+<em> Note: In practice, the encoder outputs mean ($\mu$) and specifically, log-variance ($\log \sigma^2$). Predicting $\log \sigma^2$ is more numerically stable and also simplifies the loss calculation. $\sigma$ is derived from $\log \sigma^2$ when needed. For simplicity, I will refer to this quantity as $\sigma$ throughout this readme. </em>
 
 ### The latent vector
 A sample taken from the distribution of each digit's representation from the latent space is the latent vector $\mathbf{z}$. This vector $\mathbf{z}$ represents a specific "variation" of a specific handwritten digit.
@@ -32,10 +32,9 @@ The ability to sample from a distribution to generate new digit variations makes
 ## The reparameterization trick
 Drawing a random sample from a probability distribution is a stochastic operation, and not a smooth mathematical function of $\mu$ and $\sigma$. Directly sampling a latent vector from the encoder's distribution is not differentiable, and would prevent gradients from flowing back into the encoder during training. The operation needs to be differentiable because that’s the only way gradient descent can update parameters $\mu$ and $\sigma$, allowing the encoder to learn useful latent representations.
 
-To solve this, the random sampling of vector $\mathbf{z}$ is re-expressed as a deterministic function of the encoder parameters ($\mu$ and $\sigma$) and an extra random variable term ($\varepsilon$):
+To solve this, the random sampling of vector $\mathbf{z}$ is re-expressed as a deterministic function of the encoder parameters and an extra random variable term:
 
 $\mathbf{z} = \mu + \sigma \cdot \varepsilon$
-
 - $\mu$ and $\sigma$ are encoder outputs
 - $\varepsilon$ is random noise drawn from a standard normal distribution
 - $\sigma$ is scaled by $\varepsilon$ to induce variability
@@ -46,11 +45,27 @@ The reparameterization trick makes it possible to backpropagate through the rand
 
 
 ## The loss function
-[To be updated]
+The loss function used to train VAEs is composed of the reconstruction loss (BCE), and the regularization term (KLD):
+$\mathcal{L} = \text{BCE} + \text{KLD}$
+
+The reconstruction loss optimizes the decoder to ensure its output resembles real data. Binary cross-entropy is used, which is common when training on normalized grayscale images like MNIST.
+
+$\text{BCE} = - \sum_i \left[ x_i \log(\hat{x}_i) + (1 - x_i)\log(1 - \hat{x}_i) \right]$
+- $i$ iterates over all pixels
+- $x$ is the original image
+- $\hat{x}$ is the reconstructed image
+
+The regularization term is the **Kullback-Leibler divergence** (KLD). KL divergence regularizes the latent space by encouraging latent vectors to be close to a standard normal distribution. This prevents overfitting and makes the latent space continuous.
+
+$\text{KLD} = -\tfrac{1}{2} \sum_j \left( 1 + \log \sigma_j^2 - \mu_j^2 - \sigma_j^2 \right)$
+- $j$ iterates over each latent dimension
+- $\log \sigma_j^2$ is the log-variance output from the encoder
+- $\mu_j^2$ is the squared mean of latent distribution for dimension $j$
+- $\sigma_j^2$ is the variance of latent distribution for dimension $j$
 
 
----
-## install instructions, req.txt. training and demo examples
+
+## installation instructions, req.txt., dataset used, training and demo examples
 [To be updated]
 
 ```sh
