@@ -18,7 +18,9 @@ The latent space is a multi-dimensional co-ordinate system where the representat
 The encoder component of the model encodes each handwritten digit image into the latent space as a normal distribution, parameterized by mean ($\mu$) and standard deviation ($\sigma$).<sup>&nbsp;refer note below</sup> <br>
 This distribution includes the range of possible handwritten variations for a specific digit.
 
-Note: In practice, the encoder outputs mean ($\mu$) and specifically, log-variance ($\log \sigma^2$). Predicting $\log \sigma^2$ is more numerically stable and also simplifies the loss calculation. $\sigma$ is derived from $\log \sigma^2$ when needed. For simplicity, I will refer to this quantity as $\sigma$ throughout this readme.
+Note: In practice, the encoder outputs mean ($\mu$) and specifically, log-variance ($\log \sigma^2$), not  standard deviation ($\sigma$).<br>
+Predicting $\log \sigma^2$ is more numerically stable and also simplifies the loss calculation. $\sigma$ is derived from $\log \sigma^2$ when needed. <br>
+For simplicity, I will refer to this quantity as the standard deviation ($\sigma$) throughout this readme.
 
 
 ### The latent vector
