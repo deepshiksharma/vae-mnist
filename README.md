@@ -15,12 +15,10 @@ The Conditional VAE extends upon the vanilla VAE by passing in class labels duri
 ## What is the latent space?
 The latent space is a multi-dimensional co-ordinate system where the representation of input data is held.
 
-The encoder component of the model encodes each handwritten digit image into the latent space as a normal distribution, parameterized by mean ($\mu$) and standard deviation ($\sigma$).<sup>  _refer note below_</sup> <br>
+The encoder component of the model encodes each handwritten digit image into the latent space as a normal distribution, parameterized by mean ($\mu$) and standard deviation ($\sigma$).<sup>&nbsp;refer note below</sup> <br>
 This distribution includes the range of possible handwritten variations for a specific digit.
 
 Note: In practice, the encoder outputs mean ($\mu$) and specifically, log-variance ($\log \sigma^2$). Predicting $\log \sigma^2$ is more numerically stable and also simplifies the loss calculation. $\sigma$ is derived from $\log \sigma^2$ when needed. For simplicity, I will refer to this quantity as $\sigma$ throughout this readme.
-
-<em>Note: In practice, the encoder outputs mean \( \mu \) and specifically, log-variance \( \log \sigma^2 \). Predicting \( \log \sigma^2 \) is more numerically stable and also simplifies the loss calculation. \( \sigma \) is derived from \( \log \sigma^2 \) when needed. For simplicity, I will refer to this quantity as \( \sigma \) throughout this readme.</em>
 
 
 ### The latent vector
