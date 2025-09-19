@@ -87,10 +87,8 @@ matplotlib==3.10.1
 ## MNIST dataset
 The MNIST dataset is one of the most legendary datasets in machine learning. It contains 70,000 grayscale images of handwritten digits, each sized 28×28 pixels. 10 samples of each digit from the dataset is diaplyed below:
 
-![mnist dataset all class samples](./assets/mnist_10x10_300dpi.png)
-
 <p align="center">
-  <img src="./assets/mnist_10x10_300dpi.png" alt="mnist dataset all class samples" width="550"/>
+    <img src="./assets/mnist_10x10_300dpi.png" alt="mnist dataset all class samples" width="600"/>
 </p>
 
 
