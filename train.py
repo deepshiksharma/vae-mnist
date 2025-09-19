@@ -2,20 +2,33 @@ import sys, os
 import torch
 import torch.nn.functional as F
 from torchvision import datasets, transforms
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 from models.vae import VAE
 from models.cvae import CVAE
 from trainer import vae_trainer, cvae_trainer
-from utils import present_hyperparams
 
-# Check command line argument
+# Check command line argument for which model to train
 if len(sys.argv) != 2 or sys.argv[1] not in ["vae", "conditional_vae"]:
     print("Invalid arguments.\nCorrect usage:")
     print("  python train.py vae                # Train variational autoencoder")
     print("  python train.py conditional_vae    # Train conditional variational autoencoder")
     sys.exit(1)
 model_to_train = sys.argv[1]
+
+
+# Utility function to display hyperparameters
+def display_hyperparams(hyperparams):
+    print("Training parameters")
+    for k, v in hyperparams.items():
+        print(f"\t{k}: {v}")
+    print("Note: Training parameters can be changed from within train.py (ln 46-49)\n")
+    proceed = input("Proceed with training using the parameters above? (y/n): ").lower()
+    while proceed not in ["y", "n"]:
+        proceed = input("Invalid input. Enter \"y\" or \"n\": ").lower()
+    if proceed == "n":
+            sys.exit("Training aborted.")
+    return
 
 
 # The loss function
@@ -35,21 +48,15 @@ hyperparams = {
     'batch_size': 64,
     'device': device
 }
-present_hyperparams(hyperparams)
+display_hyperparams(hyperparams)
 
 
 # The dataset
 transform = transforms.Compose([transforms.ToTensor()])
-dataset = datasets.MNIST(root="./", train=True, download=True, transform=transform)
-num_classes = len(dataset.classes)
-
-# training and validation splits
-dataset_size = len(dataset)
-val_size = int(dataset_size * 0.1)
-train_size = dataset_size - val_size
-train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
-print(f"\ndataset_size: {dataset_size}\tnum_classes: {num_classes}")
-print(f"train_size: {train_size}\tval_size: {val_size}\n")
+train_dataset = datasets.MNIST(root="./", train=True, download=True, transform=transform)
+val_dataset = datasets.MNIST(root="./", train=False, download=True, transform=transform)
+num_classes = len(train_dataset.classes)
+print(f"train_size: {len(train_dataset)}\tval_size: {len(val_dataset)}\nnum_classes: {num_classes}\n")
 
 # dataloaders
 train_loader = DataLoader(train_dataset, batch_size=hyperparams['batch_size'], shuffle=True)
@@ -69,7 +76,7 @@ elif model_to_train == "conditional_vae":
 model_name = f"{model_to_train} epoch_{hyperparams['num_epochs']} \
 lr_{hyperparams['learning_rate']} bsize_{hyperparams['batch_size']}"
 
-save_path = os.path.join("outputs", model_name)
+save_path = os.path.join("./outputs", model_name)
 os.makedirs(save_path, exist_ok=True)
 
 
