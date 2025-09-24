@@ -5,15 +5,20 @@ A Conditional VAE is also implemented, which extends upon the vanilla VAE by pas
 
 
 ## How the VAE works
+
+<p align="center">
+    <img src="./assets/vae.png" alt="mnist dataset all class samples" width="750"/>
+</p>
+
 The VAE consists of two main components: The <b>encoder</b> and <b>decoder</b>. Between them lies the <b>latent space</b>.
 - Encoder: Compresses the input image into a latent space.
 - Decoder: Reverses the encoder's compression by reconstructing an image from the latent space.
 
-In this implementation, the encoder and decoder are convolutional neural networks.
+In this implementation, the encoder and decoder are both convolutional neural networks.
 
 
 ## How Conditional VAE is different
-The conditional VAE introduces class labels to the encoder and decoder. This conditions the model to generate digits of a specific class, rather than sampling any digit randomly.
+The conditional VAE introduces class labels to the model. This conditions the model to generate digits of a specific class, rather than sampling any digit randomly.
 
 
 ## What is latent space?
@@ -52,7 +57,7 @@ The reparameterization trick makes it possible to backpropagate through the rand
 The loss function used to train VAEs is composed of two terms: the reconstruction loss (BCE), and the regularization (KLD). <br>
 $\mathcal{L} = \text{BCE} + \text{KLD}$
 
-#### Reconstruction loss
+### Reconstruction loss
 The reconstruction loss term optimizes the decoder to ensure its output resembles real data. In this implementation, binary cross-entropy (BCE) is used, which is common when training on normalized grayscale images like MNIST.
 
 $\text{BCE} = - \sum_i \left[ x_i \log(\hat{x}_i) + (1 - x_i)\log(1 - \hat{x}_i) \right]$
@@ -60,7 +65,7 @@ $\text{BCE} = - \sum_i \left[ x_i \log(\hat{x}_i) + (1 - x_i)\log(1 - \hat{x}_i)
 - $x$ is the original image
 - $\hat{x}$ is the reconstructed image
 
-#### Regularization
+### Regularization
 The regularization term is the <b>Kullback-Leibler divergence</b> (KLD). KL divergence regularizes the latent space by encouraging latent vectors to be close to a standard normal distribution. This prevents overfitting and makes the latent space continuous.
 
 $\text{KLD} = -\tfrac{1}{2} \sum_j \left( 1 + \log \sigma_j^2 - \mu_j^2 - \sigma_j^2 \right)$
@@ -70,7 +75,7 @@ $\text{KLD} = -\tfrac{1}{2} \sum_j \left( 1 + \log \sigma_j^2 - \mu_j^2 - \sigma
 - $\sigma_j^2$ is the variance of latent distribution for dimension $j$
 
 <br> Note: The VAE training objective is derived by maximizing the <b>Evidence Lower Bound (ELBO)</b> on the data log-likelihood.
-In practice, this reduces to minimizing the sum of reconstruction loss (BCE) and the KL divergence, as described above.
+In practice, this reduces to minimizing the sum of the reconstruction loss (BCE), and the KL divergence, as described above.
 
 
 ---
@@ -83,6 +88,8 @@ pyversion 3.12.9
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
 matplotlib==3.10.1
 ```
+---
+
 
 ## MNIST dataset
 The MNIST dataset is one of the most legendary datasets in machine learning. It contains 70,000 grayscale images of handwritten digits, each sized 28×28 pixels. 10 samples of each digit from the dataset is diaplyed below:
