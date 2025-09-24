@@ -18,6 +18,9 @@ In this implementation, the encoder and decoder are both convolutional neural ne
 
 
 ## How Conditional VAE is different
+
+[To be updated with image]
+
 The conditional VAE introduces class labels to the model. This conditions the model to generate digits of a specific class, rather than sampling any digit randomly.
 
 
@@ -100,9 +103,9 @@ The MNIST dataset is one of the most legendary datasets in machine learning. It 
 
 
 ## Model training
-[work in progress]
+[To be updated]
 
 
 ## Generating images of handwritten digits
-[work in progress]
+[To be updated]
 
