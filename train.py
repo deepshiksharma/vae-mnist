@@ -8,11 +8,12 @@ from models.vae import VAE
 from models.cvae import CVAE
 from trainer import vae_trainer, cvae_trainer
 
+
 # Check command line argument for which model to train
 if len(sys.argv) != 2 or sys.argv[1] not in ["vae", "conditional_vae"]:
     print("Invalid arguments.\nCorrect usage:")
-    print("  python train.py vae                # Train variational autoencoder")
-    print("  python train.py conditional_vae    # Train conditional variational autoencoder")
+    print("  $ python train.py vae                # Train variational autoencoder")
+    print("  $ python train.py conditional_vae    # Train conditional variational autoencoder")
     sys.exit(1)
 model_to_train = sys.argv[1]
 
@@ -22,8 +23,8 @@ def display_hyperparams(hyperparams):
     print("Training parameters")
     for k, v in hyperparams.items():
         print(f"\t{k}: {v}")
-    print("Note: Training parameters can be changed from within train.py (ln 46-49)\n")
-    proceed = input("Proceed with training using the parameters above? (y/n): ").lower()
+    print("\nNote: Training parameters can be changed in train.py (ln 48-51)")
+    proceed = input("\nProceed with training using the parameters above? (y/n): ").lower()
     while proceed not in ["y", "n"]:
         proceed = input("Invalid input. Enter \"y\" or \"n\": ").lower()
     if proceed == "n":
@@ -37,6 +38,7 @@ def the_loss_function(recon_x, x, mu, logvar):
     KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
     return BCE + KLD
 
+
 # The compute device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"device: {device}\n")
@@ -44,7 +46,7 @@ print(f"device: {device}\n")
 # The hyperparameters
 hyperparams = {
     'learning_rate': 1e-3,
-    'num_epochs': 3,
+    'num_epochs': 10,
     'batch_size': 64,
     'device': device
 }
